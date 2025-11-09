@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Porkbun Hide Subdomains
 // @namespace    https://porkbun.com/
-// @version      1.0
+// @version      1.0.1
 // @description  Hide all domains that are third-level or deeper in Porkbun search results
 // @author       banochkin.com DAO
 // @match        https://porkbun.com/checkout/search*
@@ -29,8 +29,21 @@
         });
     }
 
-    const observer = new MutationObserver(hideSubdomains);
+    function boldRenewalPrices() {
+        const renewalElements = document.querySelectorAll('.renewsAtContainer');
+        renewalElements.forEach(el => {
+            el.style.fontWeight = 'bold';
+            el.style.fontSize = '13px'
+        });
+    }
+
+    function applyModifications() {
+        hideSubdomains();
+        boldRenewalPrices();
+    }
+
+    const observer = new MutationObserver(applyModifications);
     observer.observe(document.body, { childList: true, subtree: true });
 
-    hideSubdomains();
+    applyModifications();
 })();
